@@ -1,0 +1,118 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 14, 2025, 11:32:51 AM
+    Author     : 94775
+*/
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Login Container */
+.login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Heading */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Fields */
+label {
+    display: block;
+    font-size: 14px;
+    margin: 10px 0 5px;
+    color: #555;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Button */
+button {
+    background: #0A6847;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Error Message */
+p {
+    color: red;
+    font-size: 14px;
+}
+
+/* Register Link */
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Icons Styling */
+i {
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

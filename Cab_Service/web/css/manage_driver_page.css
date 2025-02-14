@@ -1,0 +1,96 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 13, 2025, 9:10:42 AM
+    Author     : 94775
+*/
+
+        .dashboard-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        .driver-form, .driver-info {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .driver-form h2, .driver-info h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .driver-info table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .driver-info table thead {
+            background: #0A6847;
+            color: white;
+            text-align: left;
+        }
+
+        .driver-info table th, .driver-info table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .driver-info table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .driver-info table tbody tr:hover {
+            background: #f1f1f1;
+        }
+
+        .driver-form form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .driver-form form input, .driver-form form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .driver-form form button {
+            width: 15%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .update {
+            background: #180A68;
+            color: white;
+        }
+
+        .add {
+            background: #0A6847;
+            color: white;
+        }
+
+        .cancel {
+            background: #d9534f;
+            color: white;
+        }

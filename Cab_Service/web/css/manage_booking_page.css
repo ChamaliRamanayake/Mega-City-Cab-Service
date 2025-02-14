@@ -1,0 +1,49 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 13, 2025, 9:17:44 AM
+    Author     : 94775
+*/
+
+.manage-bookings {
+                background: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 70%;
+                max-width: 1100px;
+                margin: 20px auto;
+            }
+            .manage-bookings h2 {
+                font-size: 24px;
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            button {
+                padding: 8px 12px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                color: white;
+            }
+            .approve { background: green; }
+            .reject { background: red; }
+            .cancel { background: orange; }
+            button:hover { opacity: 0.8; }

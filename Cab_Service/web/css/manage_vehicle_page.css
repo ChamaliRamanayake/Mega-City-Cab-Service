@@ -1,0 +1,182 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 13, 2025, 8:59:08 AM
+    Author     : 94775
+*/
+
+/* Dashboard Content */
+        .dashboard-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Ensures responsiveness */
+            overflow: hidden;
+        }
+
+        .vehicle-form, .vehicle-info {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .vehicle-form h2, .vehicle-info h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        /* Vehicle Info Table */
+.vehicle-info table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Table Headers */
+.vehicle-info table thead {
+    background: #0A6847;
+    color: white;
+    text-align: left;
+}
+
+/* Table Header Cells */
+.vehicle-info table th {
+    padding: 12px;
+    font-weight: bold;
+}
+
+/* Table Rows */
+.vehicle-info table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s ease;
+}
+
+/* Table Cells */
+.vehicle-info table td {
+    padding: 10px;
+    color: #333;
+}
+
+/* Alternate Row Background */
+.vehicle-info table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* Hover Effect */
+.vehicle-info table tbody tr:hover {
+    background: #f1f1f1;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .vehicle-info table, 
+    .vehicle-info table thead, 
+    .vehicle-info table tbody, 
+    .vehicle-info table th, 
+    .vehicle-info table td, 
+    .vehicle-info table tr {
+        display: block;
+        width: 100%;
+    }
+    
+    .vehicle-info table thead {
+        display: none;
+    }
+
+    .vehicle-info table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+    }
+
+    .vehicle-info table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .vehicle-info table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #0A6847;
+    }
+}
+
+        .vehicle-form form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .vehicle-form form input,
+        .vehicle-form form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .vehicle-form form button {
+            width: 15%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .update{
+            background: #180A68;
+            color: white;
+        }
+
+        .add {
+            background: #0A6847;
+            color: white;
+        }
+
+        .cancel {
+            background: #d9534f;
+            color: white;
+        }
+        
+        /* reset Button */
+.manage-vehicles form .add {
+    background: #0A6847;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.manage-vehicles form .cancel {
+    background: #d9534f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+        /* Vehicle Info Box */
+        .vehicle-info p {
+            font-size: 14px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .vehicle-info .info strong {
+            color: #333;
+        }
+

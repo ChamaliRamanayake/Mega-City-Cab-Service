@@ -1,0 +1,181 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 12, 2025, 8:45:10 PM
+    Author     : 94775
+*/
+
+/* Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #0A6847;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-account {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;  /* Centers vertically */
+    width: 120px;  /* Adjust size */
+    height: 120px;  /* Adjust size */
+    border-radius: 50%;  /* Circular shape */
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border: 3px solid #fff;
+    margin: 0 auto;  /* Centers it inside the sidebar */
+}
+
+
+.profile-account .profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* Ensure the image covers the div area without distortion */
+}
+
+/* Sidebar Menu */
+/* Sidebar Menu */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.menu li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: inherit; /* Keeps the text color unchanged */
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensures full clickable area */
+}
+
+.menu li i {
+    margin-right: 10px;
+}
+
+.menu .active, .menu li:hover {
+    background: #7ABA78; /* Highlight only the <li> */
+    transition: background 0.3s ease;
+}
+
+
+/* Logout Button */
+.logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #F3CA52;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.logout:hover {
+    background: #e0b347;
+}
+
+.logout i {
+    margin-right: 8px;
+}
+
+/* Content */
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #F6E9B2;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile .username {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .menu {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+    .dashboard-content {
+        flex-direction: column;
+    }
+}
