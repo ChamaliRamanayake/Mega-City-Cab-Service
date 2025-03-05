@@ -4,8 +4,77 @@
     Author     : 94775
 --%>
 
-<%@ page import="java.sql.*" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*, java.security.MessageDigest" %> 
+<%@ page session="true" %>
+
+<%
+    // Database connection parameters
+    String dbURL = "jdbc:mysql://localhost:3306/vehicle_reservation_db"; // Change database name
+    String dbUser = "root";  // Change to your DB username
+    String dbPass = "";  // Change to your DB password
+
+    String loginError = ""; // Initialize error message variable
+
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Hash the entered password using SHA-1
+        String hashedPassword = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] hashedBytes = md.digest(password.getBytes("UTF-8"));
+
+            // Convert to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            hashedPassword = sb.toString();
+        } catch (Exception e) {
+            loginError = "Error hashing password: " + e.getMessage();
+        }
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Load MySQL JDBC Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish Connection
+            conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+
+            // Prepare SQL Query (compare with hashed password)
+            String sql = "SELECT * FROM customer WHERE username = ? AND password = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            stmt.setString(2, hashedPassword); // Use hashed password for comparison
+
+            // Execute Query
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // If a matching user is found, start a session
+                session.setAttribute("customerUser", username);
+                response.sendRedirect("customer_dashboard.jsp"); // Redirect to dashboard
+            } else {
+                loginError = "Invalid username or password!";
+            }
+
+        } catch (Exception e) {
+            loginError = "Database error: " + e.getMessage();
+        } finally {
+            // Close resources
+            if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
+            if (stmt != null) try { stmt.close(); } catch (SQLException ignored) {}
+            if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
+        }
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,28 +83,43 @@
     <title>Customer Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="css/customer_loginPage.css">
-    <script>
-        function validateForm() {
-            let username = document.getElementById("username").value;
-            let password = document.getElementById("password").value;
-            if (username.trim() === "" || password.trim() === "") {
-                alert("Both fields are required!");
-                return false;
-            }
-            return true;
+    <style>
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
-    </script>
+        
+        .home-link {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .home-link a {
+        display: inline-block;
+        color: #007bff;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    </style>
 </head>
 <body>
     <div class="login-container">
         <h2>Customer Login</h2>
-        
-        <%-- Check for login error --%>
-        <% if (request.getParameter("error") != null) { %>
-            <p style="color:red;">Invalid Username or Password!</p>
+
+        <% if (!loginError.isEmpty()) { %>
+            <div class="error-message">
+                <%= loginError %>
+            </div>
         <% } %>
 
-        <form action="customer_login.jsp" method="post" onsubmit="return validateForm()">
+        <form action="" method="post">
             <label for="username"><i class="fas fa-user"></i> Username</label>
             <input type="text" id="username" name="username" required>
 
@@ -46,39 +130,19 @@
         </form>
 
         <p>Don't have an account? <a href="customer_register.jsp">Register here</a></p>
+        
+        <p class="home-link">
+            <a href="index.jsp"><i class="fas fa-home"></i>HOME PAGE</a>
+        </p>
+        
     </div>
 
-    <%-- Handle login logic in JSP itself --%>
-    <%
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        if (username != null && password != null) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/vehicle_reservation_db", "root", "");
-
-                String sql = "SELECT * FROM customer WHERE phone = ? AND password = ?";
-                PreparedStatement pst = con.prepareStatement(sql);
-                pst.setString(1, username);
-                pst.setString(2, password);
-                ResultSet rs = pst.executeQuery();
-
-                if (rs.next()) {
-                    session.setAttribute("customer_id", rs.getInt("customer_id"));
-                    session.setAttribute("customer_name", rs.getString("name"));
-                    response.sendRedirect("customer_dashboard.jsp");
-                } else {
-                    response.sendRedirect("customer_login.jsp?error=1");
-                }
-
-                con.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    %>
 </body>
 </html>
+
+
+
+
+
 
 
