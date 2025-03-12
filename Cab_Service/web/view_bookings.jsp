@@ -29,15 +29,32 @@
     <div class="container mt-5">
         <h2 class="text-center">My Bookings</h2>
 
+        <%-- Success or Error Message --%>
+        <%
+            String message = request.getParameter("message");
+            String error = request.getParameter("error");
+
+            if (message != null) { %>
+                <div class="alert alert-success"><%= message %></div>
+        <%  } else if (error != null) { %>
+                <div class="alert alert-danger"><%= error %></div>
+        <%  } 
+        %>
+
         <table class="table table-bordered mt-4">
             <thead class="table-dark">
                 <tr>
                     <th>Booking ID</th>
-                    <th>Vehicle</th>
-                    <th>Destination</th>
+                    <th>Vehicle Model</th>
+                    <th>Driver Name</th>
+                    <th>Driver Contact</th>
+                    <th>From Location</th>
+                    <th>To Location</th>
                     <th>Date</th>
+                    <th>Time</th>
                     <th>Amount</th>
                     <th>Status</th>
+                    <th>Action</th> <%-- New Column for Delete Button --%>
                 </tr>
             </thead>
             <tbody>
@@ -61,25 +78,57 @@
                         rs.close();
                         ps.close();
 
-                        // Fetch bookings for this customer
-                        ps = con.prepareStatement("SELECT * FROM bookings WHERE customer_id = ?");
+                        // Fetch all bookings including pending ones with left joins
+                        String query = "SELECT b.booking_id, v.model AS vehicle_model, b.from_location, b.to_location, " +
+                                       "b.booking_date, b.booking_time, b.amount, b.status, " +
+                                       "COALESCE(d.driver_name, 'Not Assigned') AS driver_name, " +
+                                       "COALESCE(d.contact_number, 'Not Assigned') AS contact_number " +
+                                       "FROM bookings b " +
+                                       "LEFT JOIN vehicles v ON b.vehicle_id = v.vehicle_id " +
+                                       "LEFT JOIN drivers d ON b.driver_id = d.driver_id " +
+                                       "WHERE b.customer_id = ?";
+
+                        ps = con.prepareStatement(query);
                         ps.setString(1, customerID);
                         rs = ps.executeQuery();
 
                         while (rs.next()) {
+                            String bookingStatus = rs.getString("status");
                 %>
                             <tr>
                                 <td><%= rs.getString("booking_id") %></td>
-                                <td><%= rs.getString("vehicle_id") %></td>
-                                <td><%= rs.getString("destination") %></td>
+                                <td><%= rs.getString("vehicle_model") %></td>
+                                <td><%= rs.getString("driver_name") %></td>
+                                <td><%= rs.getString("contact_number") %></td>
+                                <td><%= rs.getString("from_location") %></td>
+                                <td><%= rs.getString("to_location") %></td>
                                 <td><%= rs.getString("booking_date") %></td>
+                                <td><%= rs.getString("booking_time") %></td>
                                 <td><%= rs.getString("amount") %></td>
-                                <td><%= rs.getString("status") %></td>
+                                <td>
+                                    <span class="badge 
+                                        <%= bookingStatus.equalsIgnoreCase("Approved") ? "bg-success" : 
+                                            bookingStatus.equalsIgnoreCase("Cancelled") ? "bg-danger" : 
+                                            "bg-warning text-dark" %>">
+                                        <%= bookingStatus %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if ("Pending".equalsIgnoreCase(bookingStatus)) { %>
+                                        <a href="delete_bookings.jsp?id=<%= rs.getString("booking_id") %>" 
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure you want to delete this booking?');">
+                                            Delete
+                                        </a>
+                                    <% } else { %>
+                                        <button class="btn btn-secondary btn-sm" disabled>Cannot Delete</button>
+                                    <% } %>
+                                </td>
                             </tr>
                 <%
                         }
                     } catch (Exception e) {
-                        out.println("<tr><td colspan='6' style='color: red;'>Error: " + e.getMessage() + "</td></tr>");
+                        out.println("<tr><td colspan='11' style='color: red;'>Error: " + e.getMessage() + "</td></tr>");
                     } finally {
                         if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
                         if (ps != null) try { ps.close(); } catch (SQLException ignored) {}
@@ -93,5 +142,15 @@
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
