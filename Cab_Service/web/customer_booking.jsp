@@ -14,10 +14,12 @@
 
     if (customerUser == null) {
         response.sendRedirect("login.jsp"); // Redirect to login page if session is empty
+        return;
     }
 
-    // Initialize customer ID
+    // Initialize variables
     int customerId = -1;
+    double pricePerKm = 0.0;
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,7 +34,18 @@
         if (rs.next()) {
             customerId = rs.getInt("customer_id");
         } else {
-            response.sendRedirect("login.jsp"); // Redirect if customer ID is not found
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        rs.close();
+        ps.close();
+
+        // Retrieve the latest price per km from the database
+        String priceQuery = "SELECT price_per_km FROM pricing LIMIT 1";
+        ps = con.prepareStatement(priceQuery);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            pricePerKm = rs.getDouble("price_per_km");
         }
 
         rs.close();
@@ -72,17 +85,17 @@
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/vehicle_reservation_db", "root", "");
-                    
-                    String query = "SELECT model, plate_number FROM vehicles WHERE vehicle_id = ?";
-                    PreparedStatement ps = con.prepareStatement(query);
+
+                    String vehicleQuery = "SELECT model, plate_number FROM vehicles WHERE vehicle_id = ?";
+                    PreparedStatement ps = con.prepareStatement(vehicleQuery);
                     ps.setInt(1, Integer.parseInt(vehicleId));
                     ResultSet rs = ps.executeQuery();
-                    
+
                     if (rs.next()) {
                         model = rs.getString("model");
                         plateNumber = rs.getString("plate_number");
                     }
-                    
+
                     rs.close();
                     ps.close();
                     con.close();
@@ -107,6 +120,9 @@
             <label>Distance (km):</label>
             <input type="number" name="distance" id="distance" min="1" step="0.1" required oninput="calculatePrice()">
 
+            <label>Price Per Km (LKR):</label>
+            <input type="text" id="pricePerKm" value="<%= pricePerKm %>" readonly>
+
             <label>Total Amount (LKR):</label>
             <input type="text" name="amount" id="amount" readonly>
 
@@ -126,7 +142,7 @@
     <script>
         function calculatePrice() {
             var distance = document.getElementById("distance").value;
-            var pricePerKm = 250;
+            var pricePerKm = document.getElementById("pricePerKm").value;
             var total = distance * pricePerKm;
             document.getElementById("amount").value = total.toFixed(2);
         }
@@ -134,6 +150,7 @@
 
 </body>
 </html>
+
 
 
 
