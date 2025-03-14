@@ -7,13 +7,15 @@
 <%@page import="java.sql.*"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page session="true" %>
+
 <%
     // Check if customer is logged in
     String customerUser = (String) session.getAttribute("customerUser");
     if (customerUser == null) {
-        response.sendRedirect("customer_login.jsp"); // Redirect to login page if session is empty
+        response.sendRedirect("login.jsp"); // Redirect to login page if session is empty
     }
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,31 +30,6 @@
         button:hover { background: #0056b3; }
         .error { color: red; font-size: 16px; }
     </style>
-
-    <script>
-        function calculateFare() {
-            let destination = document.getElementById("destination").value;
-            let fareInput = document.getElementById("amount");
-            let fare = 0;
-
-            // Define fixed fare rates (Example: adjust based on real data)
-            let fareRates = {
-                "Colombo Fort": 1000,
-                "Pettah": 1200,
-                "Nugegoda": 1500,
-                "Maharagama": 1800,
-                "Kottawa": 2000
-            };
-
-            // Set the fare amount based on the selected destination
-            if (fareRates[destination]) {
-                fare = fareRates[destination];
-            }
-
-            // Update the fare input field
-            fareInput.value = fare;
-        }
-    </script>
 </head>
 <body>
 
@@ -94,27 +71,43 @@
 
             <input type="hidden" name="vehicle_id" value="<%= vehicleId %>">
 
-            <label>Destination:</label>
-            <select name="destination" id="destination" onchange="calculateFare()" required>
-                <option value="">Select Destination</option>
-                <option value="Colombo Fort">Colombo Fort</option>
-                <option value="Pettah">Pettah</option>
-                <option value="Nugegoda">Nugegoda</option>
-                <option value="Maharagama">Maharagama</option>
-                <option value="Kottawa">Kottawa</option>
-            </select>
+            <label>From Location:</label>
+            <input type="text" name="from_location" required>
 
-            <label>Amount (LKR):</label>
-            <input type="number" name="amount" id="amount" required placeholder="Fare will be calculated" readonly>
+            <label>To Location:</label>
+            <input type="text" name="to_location" required>
 
-            <input type="hidden" name="customer_id" value="1"> <%-- Replace with session-based customer_id --%>
+            <label>Distance (km):</label>
+            <input type="number" name="distance" id="distance" min="1" step="0.1" required oninput="calculatePrice()">
+
+            <label>Total Amount (LKR):</label>
+            <input type="text" name="amount" id="amount" readonly>
+
+            <label>Booking Date:</label>
+            <input type="date" name="booking_date" required>
+
+            <label>Booking Time:</label>
+            <input type="time" name="booking_time" required>
+
+            <input type="hidden" name="customer_id" value="1"> 
 
             <button type="submit">Book Now</button>
         </form>
+
     </div>
+
+    <script>
+        function calculatePrice() {
+            var distance = document.getElementById("distance").value;
+            var pricePerKm = 250;
+            var total = distance * pricePerKm;
+            document.getElementById("amount").value = total.toFixed(2);
+        }
+    </script>
 
 </body>
 </html>
+
 
 
 
