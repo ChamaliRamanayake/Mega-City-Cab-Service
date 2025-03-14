@@ -11,8 +11,35 @@
 <%
     // Check if customer is logged in
     String customerUser = (String) session.getAttribute("customerUser");
+
     if (customerUser == null) {
         response.sendRedirect("login.jsp"); // Redirect to login page if session is empty
+    }
+
+    // Initialize customer ID
+    int customerId = -1;
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/vehicle_reservation_db", "root", "");
+
+        // Retrieve the customer ID based on the logged-in username
+        String query = "SELECT customer_id FROM customer WHERE username = ?";
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setString(1, customerUser);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            customerId = rs.getInt("customer_id");
+        } else {
+            response.sendRedirect("login.jsp"); // Redirect if customer ID is not found
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+    } catch (Exception e) {
+        out.println("<p class='error'>Error: " + e.getMessage() + "</p>");
     }
 %>
 
@@ -89,7 +116,7 @@
             <label>Booking Time:</label>
             <input type="time" name="booking_time" required>
 
-            <input type="hidden" name="customer_id" value="1"> 
+            <input type="hidden" name="customer_id" value="<%= customerId %>"> 
 
             <button type="submit">Book Now</button>
         </form>
@@ -107,6 +134,7 @@
 
 </body>
 </html>
+
 
 
 
