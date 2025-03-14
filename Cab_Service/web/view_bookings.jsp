@@ -12,7 +12,7 @@
     // Check if the user is logged in
     String customerUser = (String) session.getAttribute("customerUser");
     if (customerUser == null) {
-        response.sendRedirect("customer_login.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
 %>
@@ -50,11 +50,13 @@
                     <th>Driver Contact</th>
                     <th>From Location</th>
                     <th>To Location</th>
+                    <th>Distance</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Action</th> <%-- New Column for Delete Button --%>
+                    <th>Action</th> 
+                    <th>View</th>
                 </tr>
             </thead>
             <tbody>
@@ -79,7 +81,7 @@
                         ps.close();
 
                         // Fetch all bookings including pending ones with left joins
-                        String query = "SELECT b.booking_id, v.model AS vehicle_model, b.from_location, b.to_location, " +
+                        String query = "SELECT b.booking_id, v.model AS vehicle_model, b.from_location, b.to_location, b.distance, " +
                                        "b.booking_date, b.booking_time, b.amount, b.status, " +
                                        "COALESCE(d.driver_name, 'Not Assigned') AS driver_name, " +
                                        "COALESCE(d.contact_number, 'Not Assigned') AS contact_number " +
@@ -102,6 +104,7 @@
                                 <td><%= rs.getString("contact_number") %></td>
                                 <td><%= rs.getString("from_location") %></td>
                                 <td><%= rs.getString("to_location") %></td>
+                                <td><%= rs.getString("distance") %></td>
                                 <td><%= rs.getString("booking_date") %></td>
                                 <td><%= rs.getString("booking_time") %></td>
                                 <td><%= rs.getString("amount") %></td>
@@ -124,6 +127,14 @@
                                         <button class="btn btn-secondary btn-sm" disabled>Cannot Delete</button>
                                     <% } %>
                                 </td>
+                                <!-- Invoice Button -->
+                                <td>
+                                    <% if ("Approved".equalsIgnoreCase(bookingStatus)) { %>
+                                        <a href="invoice.jsp?id=<%= rs.getString("booking_id") %>" class="btn btn-info btn-sm">View Invoice</a>
+                                    <% } else { %>
+                                        <button class="btn btn-secondary btn-sm" disabled>No Invoice</button>
+                                    <% } %>
+                                </td>
                             </tr>
                 <%
                         }
@@ -142,9 +153,6 @@
     </div>
 </body>
 </html>
-
-
-
 
 
 
