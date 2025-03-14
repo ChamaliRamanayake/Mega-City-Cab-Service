@@ -164,6 +164,7 @@
                                 <th>Driver</th>
                                 <th>From</th>
                                 <th>To</th>
+                                <th>Distance</th>
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Amount</th>
@@ -178,7 +179,7 @@
 
                                     String query = "SELECT b.booking_id, c.fname AS customer_name, v.model AS vehicle_model, " +
                                                    "COALESCE(d.driver_name, 'Not Assigned') AS driver_name, " +
-                                                   "b.from_location, b.to_location, b.booking_date, b.booking_time, " +
+                                                   "b.from_location, b.to_location, b.distance, b.booking_date, b.booking_time, " +
                                                    "b.amount, b.status " +
                                                    "FROM bookings b " +
                                                    "JOIN customer c ON b.customer_id = c.customer_id " +
@@ -201,6 +202,7 @@
                                 <td><%= rs.getString("driver_name") %></td>
                                 <td><%= rs.getString("from_location") %></td>
                                 <td><%= rs.getString("to_location") %></td>
+                                <td><%= rs.getString("distance") %> Km</td>
                                 <td><%= rs.getString("booking_date") %></td>
                                 <td><%= rs.getString("booking_time") %></td>
                                 <td>Rs. <%= rs.getString("amount") %></td>
